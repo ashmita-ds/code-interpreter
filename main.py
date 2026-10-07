@@ -8,9 +8,6 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
-
-import os
-from openai import OpenAI
 class CodeRequest(BaseModel):
     code: str
 
@@ -52,10 +49,7 @@ def execute_python_code(code: str):
         sys.stdout = old_stdout
 class ErrorAnalysis(BaseModel):
     error_lines: List[int]
-client = OpenAI(
-    api_key=os.environ["AIPIPE_TOKEN"],
-    base_url="https://aipipe.org/openai/v1"
-)
+
 def analyze_error_with_ai(code: str, traceback_text: str):
     matches = re.findall(r'File "<string>", line (\d+)', traceback_text)
 
